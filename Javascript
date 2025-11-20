@@ -1,0 +1,55 @@
+// Quick Sort implementation in JavaScript
+function quickSort(arr) {
+  if (arr.length <= 1) {
+    return arr.slice(); // Return a copy
+  }
+  const pivot = arr[arr.length - 1];
+  const less = [];
+  const equal = [];
+  const greater = [];
+
+  for (let num of arr) {
+    if (num < pivot) {
+      less.push(num);
+    } else if (num === pivot) {
+      equal.push(num);
+    } else {
+      greater.push(num);
+    }
+  }
+
+  return [...quickSort(less), ...equal, ...quickSort(greater)];
+}
+
+// DOM Elements
+const inputField = document.getElementById('arrayInput');
+const sortButton = document.getElementById('sortButton');
+const resultDisplay = document.getElementById('resultDisplay');
+
+// Event Listener
+sortButton.addEventListener('click', () => {
+  const input = inputField.value.trim();
+
+  if (!input) {
+    resultDisplay.textContent = "Please enter some numbers.";
+    return;
+  }
+
+  // Parse input into array of numbers
+  const inputArray = input.split(',')
+    .map(item => item.trim())
+    .filter(item => item !== '')
+    .map(Number);
+
+  // Validate input
+  if (inputArray.some(isNaN)) {
+    resultDisplay.textContent = "Invalid input! Please enter only numbers.";
+    return;
+  }
+
+  // Run quick sort
+  const sortedArray = quickSort(inputArray);
+
+  // Display result
+  resultDisplay.textContent = `[ ${sortedArray.join(', ')} ]`;
+});
